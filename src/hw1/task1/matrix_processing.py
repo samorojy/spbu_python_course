@@ -10,7 +10,7 @@ def check_matrix_format_correction(*matrices: List[List[int]]):
                 raise ValueError("Incorrect matrix format")
 
 
-def get_matrices_multiply_product(matrix1: List[List[int]], matrix2: List[List[int]]) -> List[List[int]]:
+def get_matrices_multiplication_product(matrix1: List[List[int]], matrix2: List[List[int]]) -> List[List[int]]:
     check_matrix_format_correction(matrix1, matrix2)
     if len(matrix1[0]) != len(matrix2):
         raise ValueError("Incorrect matrix format for multiplication")
