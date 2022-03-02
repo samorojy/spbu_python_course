@@ -44,7 +44,7 @@ def wc(*file_names: str):
                 for line in f:
                     lines_number += 1
                     words_number += len(line.split())
-                    bytes_number += len(line.encode('utf-8'))
+                    bytes_number += len(line.encode("utf-8"))
                 total_lines += lines_number
                 total_words += words_number
                 total_bytes += bytes_number

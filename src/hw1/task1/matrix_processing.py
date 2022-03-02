@@ -14,8 +14,10 @@ def get_matrices_multiply_product(matrix1: List[List[int]], matrix2: List[List[i
     check_matrix_format_correction(matrix1, matrix2)
     if len(matrix1[0]) != len(matrix2):
         raise ValueError("Incorrect matrix format for multiplication")
-    return [[sum([prod(elements) for elements in zip(row, column)]) for column in get_transposed_matrix(matrix2)]
-            for row in matrix1]
+    return [
+        [sum([prod(elements) for elements in zip(row, column)]) for column in get_transposed_matrix(matrix2)]
+        for row in matrix1
+    ]
 
 
 def get_transposed_matrix(matrix: List[List[int]]) -> List[List[int]]:
