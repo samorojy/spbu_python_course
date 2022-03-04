@@ -13,4 +13,3 @@
 каррирование в таком виде затруднено из-за произвольной арности.
 
 Напишите функцию curry_explicit(function, arity) и парную к ней uncurry_explicit(function, arity).
-
