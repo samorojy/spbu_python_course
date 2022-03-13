@@ -13,10 +13,7 @@ def test_safe_dictionary_multithread():
         with safe_dict.modify() as sd:
             sd[key] = value
 
-    threads = [
-        Thread(target=dictionary_modify, args=(safe_dictionary, key, key**2))
-        for key in range(1, 4)
-    ]
+    threads = [Thread(target=dictionary_modify, args=(safe_dictionary, key, key**2)) for key in range(1, 4)]
 
     for thread in threads:
         thread.start()
