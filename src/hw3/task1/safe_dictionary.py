@@ -9,6 +9,5 @@ class SafeDictionary:
 
     @contextmanager
     def modify(self):
-        self._lock.acquire()
-        yield self._dict
-        self._lock.release()
+        with self._lock:
+            yield self._dict
