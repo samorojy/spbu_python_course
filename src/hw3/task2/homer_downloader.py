@@ -23,4 +23,14 @@ async def download_homers_async(amount: int, path: str = ""):
         await task
 
 
-asyncio.run(download_homers_async(3))
+def user_interface():
+    print("Enter the number of inclusive homers you want to download:")
+    homers_amount = input()
+    while type(homers_amount) != int:
+        try:
+            homers_amount = int(homers_amount)
+        except ValueError:
+            print("Enter int number of inclusive homers you want to download:")
+            homers_amount = input()
+    asyncio.run(download_homers_async(homers_amount))
+    print(f"{homers_amount} homers uploaded successfully")
