@@ -1,6 +1,6 @@
 from threading import Thread
 
-from src.hw3.task1.safe_dictionary import SafeDictionary
+from src.hw3.safe_dictionary import SafeDictionary
 
 
 def test_safe_dictionary_multithread():
