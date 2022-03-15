@@ -1,4 +1,4 @@
-from src.hw3.task2.homer_downloader import get_homer_image_url
+from src.hw3.homer_downloader import get_homer_image_url
 
 
 def test_get_homer_image_url():
