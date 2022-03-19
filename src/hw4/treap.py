@@ -61,6 +61,13 @@ class Treap:
 
     @staticmethod
     def insert(source_node: TreapNode, node_to_insert: TreapNode) -> TreapNode:
+        """
+        Appends a new node to the tree
+
+        :param source_node: root of the tree
+        :param node_to_insert: node to append
+        :return: new root of the tree
+        """
         if source_node is None:
             return node_to_insert
         temp_node = Treap.split(source_node, node_to_insert.key)
@@ -68,11 +75,25 @@ class Treap:
 
     @staticmethod
     def remove(source_node: TreapNode, value_to_remove) -> TreapNode:
+        """
+        Removes value from the tree
+
+        :param source_node: root of the tree
+        :param value_to_remove: value to be removed
+        :return: new root of the tree
+        """
         temp_node = Treap.split(source_node, value_to_remove)
         return Treap.merge(temp_node[1], temp_node[2])
 
     @staticmethod
     def find_node(source_node: TreapNode, key):
+        """
+        Finds the value of the node with the given key
+
+        :param source_node: root of the tree
+        :param key: key of node to find
+        :return: value of node with passed key or None
+        """
         if source_node is None:
             return None
         if source_node.key == key:
@@ -83,29 +104,43 @@ class Treap:
             return Treap.find_node(source_node.right_child, key)
 
     @staticmethod
-    def split(node: TreapNode, split_value) -> tuple:
+    def split(node: TreapNode, split_key) -> tuple:
+        """
+        Splits a tree by key
+
+        :param node: root of the tree
+        :param split_key: key of the node to split
+        :return: tuple of (less_keys_tree_root, bigger_keys_tree_root, equals_keys_tree_root)
+        """
         if node is None:
             return None, None, None
-        if node.key < split_value:
-            temp_node = Treap.split(node.right_child, split_value)
+        if node.key < split_key:
+            temp_node = Treap.split(node.right_child, split_key)
             node.right_child = temp_node[0]
             return node, temp_node[1], temp_node[2]
-        elif node.key == split_value:
+        elif node.key == split_key:
             return node.left_child, node.right_child, node
         else:
-            temp_node = Treap.split(node.left_child, split_value)
+            temp_node = Treap.split(node.left_child, split_key)
             node.left_child = temp_node[1]
             return temp_node[0], node, temp_node[2]
 
     @staticmethod
-    def merge(less_keys_tree: TreapNode, big_keys_tree: TreapNode) -> TreapNode:
+    def merge(less_keys_tree: TreapNode, bigger_keys_tree: TreapNode) -> TreapNode:
+        """
+        Merges two parts of trees
+
+        :param less_keys_tree: root of the less keys tree
+        :param bigger_keys_tree: root of the bigger keys tree
+        :return: new root of the tree
+        """
         if less_keys_tree is None:
-            return big_keys_tree
-        if big_keys_tree is None:
+            return bigger_keys_tree
+        if bigger_keys_tree is None:
             return less_keys_tree
-        if less_keys_tree.priority > big_keys_tree.priority:
-            less_keys_tree.right_child = Treap.merge(less_keys_tree.right_child, big_keys_tree)
+        if less_keys_tree.priority > bigger_keys_tree.priority:
+            less_keys_tree.right_child = Treap.merge(less_keys_tree.right_child, bigger_keys_tree)
             return less_keys_tree
         else:
-            big_keys_tree.left_child = Treap.merge(less_keys_tree, big_keys_tree.left_child)
-            return big_keys_tree
+            bigger_keys_tree.left_child = Treap.merge(less_keys_tree, bigger_keys_tree.left_child)
+            return bigger_keys_tree
