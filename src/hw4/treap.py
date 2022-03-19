@@ -1,4 +1,5 @@
 import random
+from typing import Optional
 
 
 class TreapNode:
@@ -58,7 +59,7 @@ class Treap:
         yield from self.root.__iter__()
 
     @staticmethod
-    def insert(source_node: TreapNode, node_to_insert: TreapNode) -> TreapNode:
+    def insert(source_node: Optional[TreapNode], node_to_insert: TreapNode) -> TreapNode:
         """
         Appends a new node to the tree
 
