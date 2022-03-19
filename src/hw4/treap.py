@@ -2,6 +2,10 @@ import random
 
 
 class TreapNode:
+    """
+    Treap element
+    """
+
     def __init__(self, key, value):
         self.key = key
         self.priority = random.randint(0, 100)
@@ -23,6 +27,10 @@ class TreapNode:
 
 
 class Treap:
+    """
+    Data structure combining the properties of a binary tree and a heap
+    """
+
     def __init__(self, nodes: dict):
         self.root = None
         self.size = 0
