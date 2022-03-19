@@ -33,18 +33,16 @@ class Treap:
 
     def __init__(self, nodes: dict):
         self.root = None
-        self.size = 0
         for key in nodes:
             self.root = Treap.insert(self.root, TreapNode(key, nodes[key]))
-            self.size += 1
 
     def __setitem__(self, key, value):
-        Treap.insert(self.root, TreapNode(key, value))
+        self.root = Treap.insert(self.root, TreapNode(key, value))
 
     def __getitem__(self, item):
         find_result = Treap.find_node(self.root, item)
         if find_result is None:
-            raise KeyError(f"There is no key: {item} in the three")
+            raise KeyError(f"There is no key: {item} in the tree")
         return find_result
 
     def __delitem__(self, key):
@@ -70,20 +68,33 @@ class Treap:
         """
         if source_node is None:
             return node_to_insert
-        temp_node = Treap.split(source_node, node_to_insert.key)
-        return Treap.merge(Treap.merge(temp_node[0], node_to_insert), temp_node[1])
+        if node_to_insert.key > source_node.key:
+            temp_node = Treap.split(source_node, node_to_insert.key)
+            node_to_insert.left_child = temp_node[0]
+            node_to_insert.right_child = temp_node[1]
+            return node_to_insert
+        if node_to_insert.key < source_node.key:
+            node_to_insert.left_child = Treap.insert(source_node.left_child, node_to_insert)
+        else:
+            source_node.right_child = Treap.insert(source_node.right_child, node_to_insert)
+        return node_to_insert
 
     @staticmethod
-    def remove(source_node: TreapNode, value_to_remove) -> TreapNode:
+    def remove(source_node: TreapNode, key_to_remove) -> TreapNode:
         """
         Removes value from the tree
 
         :param source_node: root of the tree
-        :param value_to_remove: value to be removed
+        :param key_to_remove: value to be removed
         :return: new root of the tree
         """
-        temp_node = Treap.split(source_node, value_to_remove)
-        return Treap.merge(temp_node[1], temp_node[2])
+        if key_to_remove == source_node.key:
+            return Treap.merge(source_node.left_child, source_node.right_child)
+        if key_to_remove < source_node.key:
+            source_node.left_child = Treap.remove(source_node.left_child, key_to_remove)
+        else:
+            source_node.right_child = Treap.remove(source_node.right_child, key_to_remove)
+        return source_node
 
     @staticmethod
     def find_node(source_node: TreapNode, key):
