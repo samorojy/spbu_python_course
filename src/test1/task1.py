@@ -6,7 +6,7 @@ from typing import Callable, List
 class Spy:
     def __init__(self, function: Callable):
         self.function = function
-        self.logs: List[tuple] = []
+        self.logs: List = []
         update_wrapper(self, function)
 
     def __call__(self, *args):
