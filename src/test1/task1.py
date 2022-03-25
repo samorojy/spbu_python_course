@@ -11,7 +11,7 @@ class Spy:
 
     def __call__(self, *args, **kwargs):
         self.logs.append((datetime.datetime.now(), (args, kwargs)))
-        return self.function(*args)
+        return self.function(*args, **kwargs)
 
     def clear(self):
         self.logs.clear()
