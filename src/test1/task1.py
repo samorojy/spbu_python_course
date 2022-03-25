@@ -9,8 +9,8 @@ class Spy:
         self.logs: List = []
         update_wrapper(self, function)
 
-    def __call__(self, *args):
-        self.logs.append((datetime.datetime.now(), args))
+    def __call__(self, *args, **kwargs):
+        self.logs.append((datetime.datetime.now(), (args, kwargs)))
         return self.function(*args)
 
     def clear(self):
