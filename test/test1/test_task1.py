@@ -1,3 +1,5 @@
+import pytest
+
 from src.test1.task1 import Spy, print_usage_statistic
 
 
@@ -21,3 +23,10 @@ def test_spy_decorator():
     is_even_args = [args for (time, args) in print_usage_statistic(is_even)]
     assert is_even_args[0] == ((6,), {})
     assert is_even_args[1] == ((3,), {})
+
+    def print_hi():
+        print("hi")
+
+    print_hi()
+    with pytest.raises(TypeError):
+        args = [args for (time, args) in print_usage_statistic(print_hi)]
