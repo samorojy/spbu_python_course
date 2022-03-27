@@ -24,12 +24,12 @@ def test_treap():
         assert Treap.find_node(split_result[1], bigger_key) == bigger_value
 
     def test_merge(
-            less_keys_tree_root,
-            bigger_keys_tree_root,
-            less_branch_element_key,
-            less_branch_element_value,
-            bigger_branch_element_key,
-            bigger_branch_element_value,
+        less_keys_tree_root,
+        bigger_keys_tree_root,
+        less_branch_element_key,
+        less_branch_element_value,
+        bigger_branch_element_key,
+        bigger_branch_element_value,
     ):
         merge_result = Treap.merge(less_keys_tree_root, bigger_keys_tree_root)
         assert Treap.find_node(merge_result, less_branch_element_key) == less_branch_element_value
