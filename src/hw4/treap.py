@@ -1,4 +1,5 @@
 import random
+from collections.abc import MutableMapping
 from typing import Optional
 
 
@@ -27,17 +28,20 @@ class TreapNode:
         return f"<{self.key}:{self.value}, left: {self.left_child}, right: {self.right_child}>"
 
 
-class Treap:
+class Treap(MutableMapping):
     """
     Data structure combining the properties of a binary tree and a heap
     """
 
     def __init__(self, nodes: dict):
         self.root = None
+        self._size = len(nodes)
         for key in nodes:
             self.root = Treap.insert(self.root, TreapNode(key, nodes[key]))
 
     def __setitem__(self, key, value):
+        if Treap.find_node(self.root, key) is None:
+            self._size += 1
         self.root = Treap.insert(self.root, TreapNode(key, value))
 
     def __getitem__(self, item):
@@ -48,6 +52,7 @@ class Treap:
 
     def __delitem__(self, key):
         self.root = Treap.remove(self.root, key)
+        self._size -= 1
 
     def __contains__(self, item):
         return Treap.find_node(self.root, item) is not None
@@ -55,8 +60,16 @@ class Treap:
     def __str__(self):
         return str(self.root)
 
+    def __len__(self):
+        return self._size
+
     def __iter__(self):
-        yield from self.root.__iter__()
+        for node in self.root:
+            yield node.key
+
+    def clear(self):
+        self._size = 0
+        self.root = None
 
     @staticmethod
     def insert(source_node: Optional[TreapNode], node_to_insert: TreapNode) -> TreapNode:
@@ -87,8 +100,12 @@ class Treap:
 
         :param source_node: root of the tree
         :param key_to_remove: value to be removed
+        :raise KeyError: if key for removing was not found
         :return: new root of the tree
         """
+        if Treap.find_node(source_node, key_to_remove) is None:
+            raise KeyError(f"Key for removing was not found")
+
         if key_to_remove == source_node.key:
             return Treap.merge(source_node.left_child, source_node.right_child)
         if key_to_remove < source_node.key:
