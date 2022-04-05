@@ -1,6 +1,6 @@
 import random
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Tuple
 
 
 @dataclass
@@ -37,10 +37,10 @@ class Treap:
     def __init__(self, nodes: dict):
         self.root = None
         for key in nodes:
-            self.root = Treap.insert(self.root, TreapNode(key, nodes[key]))
+            self.insert(TreapNode(key, nodes[key]))
 
     def __setitem__(self, key, value):
-        self.root = Treap.insert(self.root, TreapNode(key, value))
+        self.insert(TreapNode(key, value))
 
     def __getitem__(self, item):
         find_result = Treap.find_node(self.root, item)
@@ -61,26 +61,29 @@ class Treap:
         yield from self.root.__iter__()
 
     @staticmethod
-    def insert(source_node: Optional[TreapNode], node_to_insert: TreapNode) -> TreapNode:
-        """
-        Appends a new node to the tree
-
-        :param source_node: root of the tree
-        :param node_to_insert: node to append
-        :return: new root of the tree
-        """
+    def _get_parent(source_node: Optional[TreapNode], node_to_insert: TreapNode) -> TreapNode:
         if source_node is None:
             return node_to_insert
         if node_to_insert.key > source_node.key:
-            temp_node = Treap.split(source_node, node_to_insert.key)
-            node_to_insert.left_child = temp_node[0]
-            node_to_insert.right_child = temp_node[1]
             return node_to_insert
         if node_to_insert.key < source_node.key:
-            node_to_insert.left_child = Treap.insert(source_node.left_child, node_to_insert)
+            node_to_insert.left_child = Treap._get_parent(source_node.left_child, node_to_insert)
         else:
-            source_node.right_child = Treap.insert(source_node.right_child, node_to_insert)
+            source_node.right_child = Treap._get_parent(source_node.right_child, node_to_insert)
         return node_to_insert
+
+    def insert(self, node_to_insert: TreapNode):
+        """
+        Appends a new node to the tree
+
+        :param node_to_insert: node to append
+        :return: new root of the tree
+        """
+        if self.root is None:
+            self.root = node_to_insert
+        else:
+            temp_node = split(self.root, node_to_insert.key)
+            self.root = merge(merge(temp_node[0], node_to_insert), temp_node[1])
 
     @staticmethod
     def remove(source_node: TreapNode, key_to_remove) -> TreapNode:
@@ -92,7 +95,7 @@ class Treap:
         :return: new root of the tree
         """
         if key_to_remove == source_node.key:
-            return Treap.merge(source_node.left_child, source_node.right_child)
+            return merge(source_node.left_child, source_node.right_child)
         if key_to_remove < source_node.key:
             source_node.left_child = Treap.remove(source_node.left_child, key_to_remove)
         else:
@@ -117,44 +120,44 @@ class Treap:
         else:
             return Treap.find_node(source_node.right_child, key)
 
-    @staticmethod
-    def split(node: TreapNode, split_key) -> tuple:
-        """
-        Splits a tree by key
 
-        :param node: root of the tree
-        :param split_key: key of the node to split
-        :return: tuple of (less_keys_tree_root, bigger_keys_tree_root, equals_keys_tree_root)
-        """
-        if node is None:
-            return None, None, None
-        if node.key < split_key:
-            temp_node = Treap.split(node.right_child, split_key)
-            node.right_child = temp_node[0]
-            return node, temp_node[1], temp_node[2]
-        elif node.key == split_key:
-            return node.left_child, node.right_child, node
-        else:
-            temp_node = Treap.split(node.left_child, split_key)
-            node.left_child = temp_node[1]
-            return temp_node[0], node, temp_node[2]
+def split(node: TreapNode, split_key) -> Tuple:
+    """
+    Splits a tree by key
 
-    @staticmethod
-    def merge(less_keys_tree: TreapNode, bigger_keys_tree: TreapNode) -> TreapNode:
-        """
-        Merges two parts of trees
+    :param node: root of the tree
+    :param split_key: key of the node to split
+    :return: tuple of (less_keys_tree_root, bigger_keys_tree_root, equals_keys_tree_root)
+    """
+    if node is None:
+        return None, None, None
+    if node.key < split_key:
+        temp_node = split(node.right_child, split_key)
+        node.right_child = temp_node[0]
+        return node, temp_node[1], temp_node[2]
+    elif node.key == split_key:
+        return node.left_child, node.right_child, node
+    else:
+        temp_node = split(node.left_child, split_key)
+        node.left_child = temp_node[1]
+        return temp_node[0], node, temp_node[2]
 
-        :param less_keys_tree: root of the less keys tree
-        :param bigger_keys_tree: root of the bigger keys tree
-        :return: new root of the tree
-        """
-        if less_keys_tree is None:
-            return bigger_keys_tree
-        if bigger_keys_tree is None:
-            return less_keys_tree
-        if less_keys_tree.priority > bigger_keys_tree.priority:
-            less_keys_tree.right_child = Treap.merge(less_keys_tree.right_child, bigger_keys_tree)
-            return less_keys_tree
-        else:
-            bigger_keys_tree.left_child = Treap.merge(less_keys_tree, bigger_keys_tree.left_child)
-            return bigger_keys_tree
+
+def merge(less_keys_tree: TreapNode, bigger_keys_tree: TreapNode) -> TreapNode:
+    """
+    Merges two parts of trees
+
+    :param less_keys_tree: root of the less keys tree
+    :param bigger_keys_tree: root of the bigger keys tree
+    :return: new root of the tree
+    """
+    if less_keys_tree is None:
+        return bigger_keys_tree
+    if bigger_keys_tree is None:
+        return less_keys_tree
+    if less_keys_tree.priority > bigger_keys_tree.priority:
+        less_keys_tree.right_child = merge(less_keys_tree.right_child, bigger_keys_tree)
+        return less_keys_tree
+    else:
+        bigger_keys_tree.left_child = merge(less_keys_tree, bigger_keys_tree.left_child)
+        return bigger_keys_tree
