@@ -117,7 +117,7 @@ class Treap:
         return None
 
 
-def split(node: TreapNode, split_key) -> Tuple:
+def split(node: Optional[TreapNode], split_key) -> Tuple:
     """
     Splits a tree by key
 
@@ -139,7 +139,7 @@ def split(node: TreapNode, split_key) -> Tuple:
         return temp_node[0], node, temp_node[2]
 
 
-def merge(less_keys_tree: TreapNode, bigger_keys_tree: TreapNode) -> TreapNode:
+def merge(less_keys_tree: Optional[TreapNode], bigger_keys_tree: Optional[TreapNode]) -> TreapNode:
     """
     Merges two parts of trees
 
