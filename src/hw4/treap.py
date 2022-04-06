@@ -36,7 +36,7 @@ class Treap:
     """
 
     def __init__(self, nodes: dict):
-        self.root = None
+        self.root: Optional[TreapNode] = None
         self._size = len(nodes)
         for key in nodes:
             self.insert(TreapNode(key, nodes[key]))
@@ -139,7 +139,7 @@ def split(node: Optional[TreapNode], split_key) -> Tuple:
         return temp_node[0], node, temp_node[2]
 
 
-def merge(less_keys_tree: Optional[TreapNode], bigger_keys_tree: Optional[TreapNode]) -> TreapNode:
+def merge(less_keys_tree: Optional[TreapNode], bigger_keys_tree: Optional[TreapNode]) -> Optional[TreapNode]:
     """
     Merges two parts of trees
 
