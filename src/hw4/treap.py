@@ -1,4 +1,5 @@
 import random
+from collections.abc import MutableMapping
 from dataclasses import dataclass
 from typing import Optional, Tuple
 
@@ -36,6 +37,7 @@ class Treap:
 
     def __init__(self, nodes: dict):
         self.root = None
+        self._size = len(nodes)
         for key in nodes:
             self.insert(TreapNode(key, nodes[key]))
 
@@ -43,34 +45,30 @@ class Treap:
         self.insert(TreapNode(key, value))
 
     def __getitem__(self, item):
-        find_result = Treap.find_node(self.root, item)
+        find_result = self.find_node(item)
         if find_result is None:
             raise KeyError(f"There is no key: {item} in the tree")
         return find_result
 
     def __delitem__(self, key):
-        self.root = Treap.remove(self.root, key)
+        self.remove(key)
 
     def __contains__(self, item):
-        return Treap.find_node(self.root, item) is not None
+        return self.find_node(item) is not None
 
     def __str__(self):
         return str(self.root)
 
-    def __iter__(self):
-        yield from self.root.__iter__()
+    def __len__(self):
+        return self._size
 
-    @staticmethod
-    def _get_parent(source_node: Optional[TreapNode], node_to_insert: TreapNode) -> TreapNode:
-        if source_node is None:
-            return node_to_insert
-        if node_to_insert.key > source_node.key:
-            return node_to_insert
-        if node_to_insert.key < source_node.key:
-            node_to_insert.left_child = Treap._get_parent(source_node.left_child, node_to_insert)
-        else:
-            source_node.right_child = Treap._get_parent(source_node.right_child, node_to_insert)
-        return node_to_insert
+    def __iter__(self):
+        for node in self.root:
+            yield node.key
+
+    def clear(self):
+        self._size = 0
+        self.root = None
 
     def insert(self, node_to_insert: TreapNode):
         """
@@ -81,44 +79,42 @@ class Treap:
         """
         if self.root is None:
             self.root = node_to_insert
+            self._size += 1
         else:
-            temp_node = split(self.root, node_to_insert.key)
-            self.root = merge(merge(temp_node[0], node_to_insert), temp_node[1])
+            less, bigger, equals = split(self.root, node_to_insert.key)
+            if equals is None:
+                self._size += 1
+            self.root = merge(merge(less, node_to_insert), bigger)
 
-    @staticmethod
-    def remove(source_node: TreapNode, key_to_remove) -> TreapNode:
+    def remove(self, key_to_remove) -> TreapNode:
         """
         Removes value from the tree
 
-        :param source_node: root of the tree
         :param key_to_remove: value to be removed
         :return: new root of the tree
         """
-        if key_to_remove == source_node.key:
-            return merge(source_node.left_child, source_node.right_child)
-        if key_to_remove < source_node.key:
-            source_node.left_child = Treap.remove(source_node.left_child, key_to_remove)
-        else:
-            source_node.right_child = Treap.remove(source_node.right_child, key_to_remove)
-        return source_node
+        less, bigger, equals = split(self.root, key_to_remove)
+        if equals is None:
+            raise KeyError("Node with this key does not exist in the Treap")
+        self.root = merge(less, bigger)
+        return equals
 
-    @staticmethod
-    def find_node(source_node: TreapNode, key):
+    def find_node(self, key) -> Optional[TreapNode]:
         """
         Finds the value of the node with the given key
 
-        :param source_node: root of the tree
         :param key: key of node to find
         :return: value of node with passed key or None
         """
-        if source_node is None:
-            return None
-        if source_node.key == key:
-            return source_node.value
-        if source_node.key > key:
-            return Treap.find_node(source_node.left_child, key)
-        else:
-            return Treap.find_node(source_node.right_child, key)
+        current_node = self.root
+        while current_node is not None:
+            if current_node.key == key:
+                return current_node
+            if current_node.key < key:
+                current_node = current_node.right_child
+            else:
+                current_node = current_node.left_child
+        return None
 
 
 def split(node: TreapNode, split_key) -> Tuple:
