@@ -30,7 +30,7 @@ class TreapNode:
         return f"<{self.key}:{self.value}, left: {self.left_child}, right: {self.right_child}>"
 
 
-class Treap:
+class Treap(MutableMapping):
     """
     Data structure combining the properties of a binary tree and a heap
     """
