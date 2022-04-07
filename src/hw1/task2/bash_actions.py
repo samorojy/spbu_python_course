@@ -40,15 +40,15 @@ def wc(*file_names: str):
     for file_path in file_names:
         try:
             with open(file_path) as f:
-                lines_number, words_number, bytes_number = 0, 0, 0
+                n_lines, n_words, n_bytes = 0, 0, 0
                 for line in f:
-                    lines_number += 1
-                    words_number += len(line.split())
-                    bytes_number += len(line.encode("utf-8"))
-                total_lines += lines_number
-                total_words += words_number
-                total_bytes += bytes_number
-                print(f"{file_path}: lines = {lines_number}, words = {words_number}, bytes = {bytes_number}")
+                    n_lines += 1
+                    n_words += len(line.split())
+                    n_bytes += len(line.encode("utf-8"))
+                total_lines += n_lines
+                total_words += n_words
+                total_bytes += n_bytes
+                print(f"{file_path}: lines = {n_lines}, words = {n_words}, bytes = {n_bytes}")
         except FileNotFoundError:
             print(f"No such file {file_path}")
     if len(file_names) > 1:
