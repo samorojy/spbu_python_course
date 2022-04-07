@@ -44,3 +44,10 @@ def test_treap_split():
     assert less_tree.find_node(0).value == "a"
     assert bigger_tree.find_node(12).value == "Kotlin"
     assert equals.value == "d"
+
+
+def test_treap_pop():
+    tree = Treap({0: "a", 1: "b", 2: "c", 3: "d"})
+    tree.pop(1)
+    with pytest.raises(KeyError):
+        var = tree[1]
