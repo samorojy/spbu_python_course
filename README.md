@@ -5,4 +5,5 @@ homework assignments for the Python programming course
 
 1. Table Analytics
 2. Chart Visualization
--https://datalore.jetbrains.com/notebook/wdtBD26wbVkWRnpHbv69IN/KOwVEJ2dVahgy1dV5eRKvU
+
+- https://datalore.jetbrains.com/notebook/wdtBD26wbVkWRnpHbv69IN/KOwVEJ2dVahgy1dV5eRKvU
