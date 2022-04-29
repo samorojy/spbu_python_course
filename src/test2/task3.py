@@ -14,7 +14,7 @@ class WordStatistic:
 
 
 def get_words_statistic(text, top_size) -> List[WordStatistic]:
-    counter = Counter()
+    counter: "Counter" = Counter()
     for word in word_pattern.findall(text):
         counter[word.lower()] += 1
     return [WordStatistic(word, freq) for word, freq in counter.most_common(top_size)]
