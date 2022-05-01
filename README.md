@@ -1,4 +1,5 @@
 # SPbU python course
+homework assignments for the Python programming course
 
 ### Задание №1
 
@@ -26,3 +27,9 @@
     - https://www.thisfuckeduphomerdoesnotexist.com
     - https://github.com/google/styleguide/blob/91d6e367e384b0d8aaaf7ce95029514fcdf38651/pyguide.md#218-threading
 
+### Задание №6
+
+1. Table Analytics
+2. Chart Visualization
+
+- https://datalore.jetbrains.com/notebook/wdtBD26wbVkWRnpHbv69IN/KOwVEJ2dVahgy1dV5eRKvU
