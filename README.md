@@ -18,4 +18,11 @@
 
 1. Реализовать свой семафор через менеджеров контекстов. Применить его для чтения / записи в Dict однозначно обезопасив
    его для мультитретинга
-   - https://github.com/google/styleguide/blob/91d6e367e384b0d8aaaf7ce95029514fcdf38651/pyguide.md#218-threading
+
+    - https://github.com/google/styleguide/blob/91d6e367e384b0d8aaaf7ce95029514fcdf38651/pyguide.md#218-threading
+2. Используя asyncio реализовать асинхронное скачивание картинок с сайта
+   (для парсинга html взять bs4). Каждая картинка должна скачиваться в отдельной корутине. Число скачиваний — аргумент
+   cli. 
+    - https://www.thisfuckeduphomerdoesnotexist.com
+    - https://github.com/google/styleguide/blob/91d6e367e384b0d8aaaf7ce95029514fcdf38651/pyguide.md#218-threading
+
