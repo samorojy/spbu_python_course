@@ -45,7 +45,6 @@ def user_interface():
         print("Error! Directory does not exist ")
         folder_path = input()
     for n in range(0, n_sprays):
-        print(n)
         generate_and_save_spray(folder_path + f"/spray_{n}.png", sprays_size, n_colors)
     print(f"{n_sprays} sprays created successfully")
 
