@@ -37,12 +37,12 @@ def user_interface():
         try:
             n_colors = int(n_colors)
         except ValueError:
-            print("Error! It must be int number of colors you want to paint! Input again: ")
+            print("Error! It must be int number of colors you want to paint!")
             n_colors = input()
     print("Enter the path to the folder where to upload:")
     folder_path = input()
     while not os.path.exists(folder_path):
-        print("Error! Directory does not exist ")
+        print("Error! Directory does not exist! Input again: ")
         folder_path = input()
     for n in range(0, n_sprays):
         generate_and_save_spray(folder_path + f"/spray_{n}.png", sprays_size, n_colors)
