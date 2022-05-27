@@ -21,7 +21,7 @@ class KMeans:
         for _ in range(self.n_clusters - 1):
             dists = np.sum([euclidean(centroid, X) for centroid in self.centroids], axis=0)
             dists /= np.sum(dists)
-            new_centroid_idx, = np.random.choice(range(len(X)), size=1, p=dists)
+            (new_centroid_idx,) = np.random.choice(range(len(X)), size=1, p=dists)
             self.centroids += [X[new_centroid_idx]]
         iteration = 0
         prev_centroids = None
@@ -49,7 +49,7 @@ class KMeans:
         return np.array([i for i in centroid_idxs])
 
 
-with Image.open('img.png') as img:
+with Image.open("img.png") as img:
     width, height = img.size
     pixels = np.array([(i % width, i // width) + c for i, c in enumerate(list(img.getdata()))])
     model = KMeans(30, 100)
@@ -58,4 +58,4 @@ with Image.open('img.png') as img:
     image_pixels = img.load()
     for i in range(len(pixels)):
         image_pixels[pixels[i][0], pixels[i][1]] = tuple(int(x) for x in model.centroids[prediction[i]][2:])
-    img.save('processed.png')
+    img.save("processed.png")
