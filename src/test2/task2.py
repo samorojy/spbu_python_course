@@ -16,7 +16,7 @@ class KMeans:
         self.n_clusters = n_clusters
         self.max_iter = max_iter
 
-    def fit(self, X: numpy.array):
+    def fit(self, X):
         self.centroids = [random.choice(X)]
         for _ in range(self.n_clusters - 1):
             dists = np.sum([euclidean(centroid, X) for centroid in self.centroids], axis=0)
@@ -38,7 +38,7 @@ class KMeans:
                     self.centroids[i] = prev_centroids[i]
             iteration += 1
 
-    def predict(self, X: numpy.array):
+    def predict(self, X):
         centroids = []
         centroid_idxs = []
         for x in X:
