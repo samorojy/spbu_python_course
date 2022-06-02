@@ -10,8 +10,9 @@ from telegram.ext import (
 
 from src.final.summarization import Summarizer
 
-logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
+summarizer = Summarizer()
 
+logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -28,8 +29,6 @@ def reply_summarized_text(update, context):
 
 
 def main():
-    summarizer = Summarizer()
-
     TOKEN = os.environ["TELEGRAM_BOT_KEY"]
     updater = Updater(TOKEN)
 
