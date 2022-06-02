@@ -1,4 +1,5 @@
 import logging
+import os
 
 from telegram import Update
 from telegram.ext import (
@@ -11,9 +12,7 @@ from telegram.ext import (
 
 from src.final.summarization import summarize_text
 
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
-)
+logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
@@ -31,13 +30,12 @@ def reply_summarized_text(update: Update, context: CallbackContext) -> None:
 
 
 def main():
-    updater = Updater("TOKEN")
+    TOKEN = os.environ["TELEGRAM_BOT_KEY"]
+    updater = Updater(TOKEN)
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(
-        MessageHandler(Filters.text & ~Filters.command, reply_summarized_text)
-    )
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, reply_summarized_text))
     updater.start_polling()
     updater.idle()
 
