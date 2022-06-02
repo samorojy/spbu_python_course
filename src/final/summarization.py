@@ -1,6 +1,6 @@
 from transformers import AutoModelForSeq2SeqLM, T5TokenizerFast
 
-MODEL_NAME = 'UrukHan/t5-russian-summarization'
+MODEL_NAME = "UrukHan/t5-russian-summarization"
 MAX_INPUT = 512
 
 tokenizer = T5TokenizerFast.from_pretrained(MODEL_NAME)
@@ -8,7 +8,8 @@ model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_NAME)
 
 
 def summarize_text(text_to_summarize) -> list:
-    if type(text_to_summarize) != list: text_to_summarize = [text_to_summarize]
+    if type(text_to_summarize) != list:
+        text_to_summarize = [text_to_summarize]
     encoded = tokenizer(
         [sequence for sequence in text_to_summarize],
         padding="longest",
